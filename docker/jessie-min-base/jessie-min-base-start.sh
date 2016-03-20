@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-. ./jessie-min-base-config.sh
+if [[ ${PWD##*/} == 'jessie-min-base' ]]; then
+    # We run on jenkins
+    . ./docker/jessie-min-base/jessie-min-base-config.sh
+else
+    . ./jessie-min-base-config.sh
+fi
 
 mkdir /tmp/j${IMAGE_NAME}
 debootstrap --variant=minbase jessie /tmp/${IMAGE_NAME} http://ftp.debian.org/debian/
