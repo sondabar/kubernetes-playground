@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-master
+  labels:
+    app: jenkins
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: jenkins
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: jenkins-master
+  labels:
+    app: jenkins
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: jenkins
+          image: jenkinsci/jenkins:2.0-alpha-3
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+            - containerPort: 50000
+              hostPort: 50000
+          volumeMounts:
+            - mountPath: /var/jenkins-home
+              name: jenkins-master-volume
+      volumes:
+      - name: jenkins-master-volume
+        emptyDir: {}
