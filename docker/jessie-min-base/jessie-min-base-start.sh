@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ ${PWD##*/} == 'jessie-min-base' ]]; then
+if [[ ${PWD##*/} != 'jessie-min-base' ]]; then
     # We run on jenkins
     . ./docker/jessie-min-base/jessie-min-base-config.sh
 else
