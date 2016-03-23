@@ -5,7 +5,6 @@ metadata:
   labels:
     app: jenkins
 spec:
-  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 8080
@@ -31,7 +30,7 @@ spec:
           image: jenkinsci/jenkins:2.0-alpha-3
           ports:
             - containerPort: 8080
-              hostPort: 8080
+              hostPort: 8090
             - containerPort: 50000
               hostPort: 50000
           volumeMounts:
