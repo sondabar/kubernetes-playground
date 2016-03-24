@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 
 while getopts ":r:i:" OPT; do
   case ${OPT} in
@@ -34,9 +34,9 @@ LATEST=`docker images | grep ${REPO_USER}/${IMAGE_NAME} | tr -s ' ' '\t' | cut -
 
 if [ -z ${LATEST} ]; then
     LATEST=0
-    docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME}:latest -t ${REPO_USER}/${IMAGE_NAME}:$((LATEST + 1)) .
+    docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} .
 else
-    docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME}:latest -t ${REPO_USER}/${IMAGE_NAME}:$((LATEST + 1)) - <<EOF
+    docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} - <<EOF
     FROM ${REPO_USER}/${IMAGE_NAME}:latest
 
     RUN apt-get -y update && \
@@ -47,4 +47,6 @@ else
 EOF
 fi
 
+ID=$(docker images | grep ${REPO_USER}/${IMAGE_NAME} | grep latest | tr -s ' ' '\t' | cut -f 3)
+docker tag ${ID} ${REPO_USER}/${IMAGE_NAME}:$((LATEST + 1))
 docker push ${REPO_USER}/${IMAGE_NAME}
