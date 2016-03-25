@@ -1,4 +1,5 @@
 FROM sondabar/jessie-minbase:latest
+MAINTAINER Lars Cormann <lars@cormann.biz>
 
 COPY jessie-backports.list /etc/apt/sources.list.d/
 
