@@ -1,5 +1,5 @@
 FROM sondabar/jessie-minbase:latest
-MAINTAINER Lars Cormann <lars@cormann.biz>
+MAINTAINER Lars Cormann <docker@cormann.biz>
 
 COPY webupd8team-java.list /etc/apt/sources.list.d/
 

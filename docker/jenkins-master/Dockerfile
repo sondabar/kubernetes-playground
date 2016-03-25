@@ -1,5 +1,5 @@
 FROM sondabar/java-jre:latest
-MAINTAINER Lars Cormann <lars@cormann.biz>
+MAINTAINER Lars Cormann <docker@cormann.biz>
 
 RUN apt-get update && apt-get install --no-install-recommends -y wget git curl zip && rm -rf /var/lib/apt/lists/*
 
