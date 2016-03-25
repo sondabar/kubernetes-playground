@@ -1,4 +1,4 @@
-FROM sondabar/java-jre:latest
+FROM 192.168.64.1:5000/sondabar/java-jre:latest
 MAINTAINER Lars Cormann <docker@cormann.biz>
 
 RUN apt-get update && apt-get install --no-install-recommends -y wget git curl zip && rm -rf /var/lib/apt/lists/*

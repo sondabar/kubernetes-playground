@@ -1,4 +1,4 @@
-FROM sondabar/jessie-minbase:latest
+FROM 192.168.64.1:5000/sondabar/jessie-minbase:latest
 MAINTAINER Lars Cormann <docker@cormann.biz>
 
 COPY jessie-backports.list /etc/apt/sources.list.d/
