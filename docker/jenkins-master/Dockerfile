@@ -1,7 +1,7 @@
 FROM 192.168.64.1:5000/sondabar/java-jre:latest
 MAINTAINER Lars Cormann <docker@cormann.biz>
 
-RUN apt-get update && apt-get install --no-install-recommends -y wget git curl zip && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y wget git curl zip unzip && rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
@@ -26,10 +26,10 @@ ENV TINI_SHA 066ad710107dc7ee05d3aa6e4974f01dc98f3888
 RUN curl -fL https://github.com/krallin/tini/releases/download/v0.5.0/tini-static -o /bin/tini && chmod +x /bin/tini \
   && echo "$TINI_SHA /bin/tini" | sha1sum -c -
 
-COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
+COPY tcp-slave-agent-port.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
-ENV JENKINS_VERSION 2.0-alpha-3
-ENV JENKINS_SHA 9a536c140fb34ad7214829c81cffb54108344b2d
+ENV JENKINS_VERSION 2.0-beta-1
+ENV JENKINS_SHA ee60952941668f2b08b668b58c19e0b0ecee16df
 
 
 # could use ADD but this one does not check Last-Modified header
@@ -55,3 +55,8 @@ ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
 # from a derived Dockerfile, can use `RUN plugins.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
 COPY plugins.sh /usr/local/bin/plugins.sh
+
+COPY config.groovy /usr/share/jenkins/ref/init.groovy.d/config.groovy
+
+COPY active-plugins.txt /usr/share/jenkins/ref/
+RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/active-plugins.txt
