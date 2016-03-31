@@ -31,21 +31,9 @@ fi
 
 docker pull -a ${REPO_USER}/${IMAGE_NAME}
 LATEST=`docker images | grep ${REPO_USER}/${IMAGE_NAME} | tr -s ' ' '\t' | cut -f 2 | grep -v latest | sort -n -r | head -n 1`
+LATEST=${LATEST:-0}
 
-if [ -z ${LATEST} ]; then
-    LATEST=0
-    docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} .
-else
-    docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} - <<EOF
-    FROM ${REPO_USER}/${IMAGE_NAME}:latest
-
-    RUN apt-get -y update && \
-        apt-get -y --force-yes dist-upgrade && \
-        apt-get -y --force-yes --purge autoremove && \
-        apt-get clean && \
-        rm -rf /var/lib/apt/lists/*
-EOF
-fi
+docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} .
 
 ID=$(docker images | grep ${REPO_USER}/${IMAGE_NAME} | grep latest | tr -s ' ' '\t' | cut -f 3)
 docker tag ${ID} ${REPO_USER}/${IMAGE_NAME}:$((LATEST + 1))
