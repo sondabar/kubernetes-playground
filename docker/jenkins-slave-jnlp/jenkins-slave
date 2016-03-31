@@ -1,6 +1,7 @@
+#!/bin/bash
+
 # The MIT License
 #
-#  Copyright (c) 2016, Lars Cormann
 #  Copyright (c) 2015, CloudBees, Inc.
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,22 +22,28 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #  THE SOFTWARE.
 
-FROM 192.168.64.1:5000/sondabar/java-jre:latest
-MAINTAINER Lars Cormann <docker@cormann.biz>
+# Usage jenkins-slave.sh [options] -url http://jenkins SECRET SLAVE_NAME
+# Optional environment variables :
+# * JENKINS_TUNNEL : HOST:PORT for a tunnel to route TCP traffic to jenkins host, when jenkins can't be directly accessed over network
+# * JENKINS_URL : alternate jenkins URL
 
-RUN apt-get update && apt-get install --no-install-recommends -y curl && rm -rf /var/lib/apt/lists/*
+if [[ $# -eq 1 ]]; then
 
-ENV HOME /home/jenkins
-RUN useradd -c "Jenkins user" -d $HOME -m jenkins
+	# if `docker run` only has one arguments, we assume user is running alternate command like `bash` to inspect the image
+	exec "$@"
 
-RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/2.56/remoting-2.56.jar \
-  && chmod 755 /usr/share/jenkins \
-  && chmod 644 /usr/share/jenkins/slave.jar
+else
 
-COPY jenkins-slave /usr/local/bin/jenkins-slave
+	# if -tunnel is not provided try env vars
+	if [[ "$@" != *"-tunnel "* ]]; then
+		if [[ ! -z "$JENKINS_TUNNEL" ]]; then
+			TUNNEL="-tunnel $JENKINS_TUNNEL"
+		fi
+	fi
 
-VOLUME /home/jenkins
-WORKDIR /home/jenkins
-USER jenkins
+	if [[ ! -z "$JENKINS_URL" ]]; then
+		URL="-url $JENKINS_URL"
+	fi
 
-ENTRYPOINT ["jenkins-slave"]
+	exec java $JAVA_OPTS -cp /usr/share/jenkins/slave.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL "$@"
+fi
