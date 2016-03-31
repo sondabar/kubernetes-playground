@@ -11,6 +11,7 @@ spec:
       protocol: TCP
   selector:
     app: jenkins
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: ReplicationController
@@ -27,7 +28,7 @@ spec:
     spec:
       containers:
         - name: jenkins
-          image: jenkinsci/jenkins:2.0-alpha-3
+          image: 192.168.64.1:5000/sondabar/jenkins-master:latest
           ports:
             - containerPort: 8080
               hostPort: 8090
