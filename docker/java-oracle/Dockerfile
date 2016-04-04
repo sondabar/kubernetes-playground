@@ -1,4 +1,4 @@
-FROM 192.168.64.1:5000/sondabar/jessie-minbase:latest
+FROM sondabar/jessie-minbase:latest
 MAINTAINER Lars Cormann <docker@cormann.biz>
 
 COPY webupd8team-java.list /etc/apt/sources.list.d/

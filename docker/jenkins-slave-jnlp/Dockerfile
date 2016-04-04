@@ -21,7 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #  THE SOFTWARE.
 
-FROM 192.168.64.1:5000/sondabar/java-jre:latest
+FROM sondabar/java-jre:latest
 MAINTAINER Lars Cormann <docker@cormann.biz>
 
 RUN apt-get update && apt-get install --no-install-recommends -y curl && rm -rf /var/lib/apt/lists/*

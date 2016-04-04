@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-REPO_USER=${REPO_USER:-"192.168.64.1:5000/sondabar"}
+DOCKER_USER=${DOCKER_USER:-"sondabar"}
+REPO=${REPO}
 IMAGE_NAME=${IMAGE_NAME:-"jessie-minbase"}
+
+if [ -z ${REPO} ]; then
+    REPO_USER=${DOCKER_USER}
+else
+    REPO_USER="${REPO}/${DOCKER_USER}"
+fi
 
 docker pull -a ${REPO_USER}/${IMAGE_NAME}
 LATEST=`docker images | grep ${REPO_USER}/${IMAGE_NAME} | tr -s ' ' '\t' | cut -f 2 | grep -v latest | sort -n -r | head -n 1`

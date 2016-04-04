@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-while getopts ":r:i:" OPT; do
+while getopts ":u:r:i:" OPT; do
   case ${OPT} in
+    u)
+      USER=${OPTARG}
+      ;;
     r)
-      REPO_USER=${OPTARG}
+      REPO=${OPTARG}
       ;;
     i)
       IMAGE_NAME=${OPTARG}
@@ -19,9 +22,17 @@ while getopts ":r:i:" OPT; do
   esac
 done
 
-if [ -z ${REPO_USER} ]; then
-    echo "Option -r (REPO_USER) is missing!" >&2
+if [ -z ${USER} ]; then
+    echo "Option -u (USER) is missing!" >&2
     exit 1;
+fi
+
+if [ -z ${REPO} ]; then
+    REPO_USER=${USER}
+else
+    REPO_USER="${REPO}/${USER}"
+    mv Dockerfile Dockerfile.bak
+    sed -e s#FROM\ #FROM\ ${REPO_USER}# Dockerfile.bak > Dockerfile
 fi
 
 if [ -z ${IMAGE_NAME} ]; then
@@ -34,6 +45,10 @@ LATEST=`docker images | grep ${REPO_USER}/${IMAGE_NAME} | tr -s ' ' '\t' | cut -
 LATEST=${LATEST:-0}
 
 docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} .
+
+if [ -n ${REPO} ]; then
+    mv Dockfile.bak Dockerfile
+fi
 
 ID=$(docker images | grep ${REPO_USER}/${IMAGE_NAME} | grep latest | tr -s ' ' '\t' | cut -f 3)
 docker tag ${ID} ${REPO_USER}/${IMAGE_NAME}:$((LATEST + 1))
