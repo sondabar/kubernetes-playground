@@ -60,3 +60,5 @@ COPY config.groovy /usr/share/jenkins/ref/init.groovy.d/config.groovy
 
 COPY active-plugins.txt /usr/share/jenkins/ref/
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/active-plugins.txt
+
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
