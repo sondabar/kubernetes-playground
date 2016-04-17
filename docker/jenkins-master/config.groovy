@@ -9,6 +9,6 @@ Jenkins.instance.setNumExecutors(0)
 PodTemplate podTemplate = new PodTemplate("sondabar/jenkins-slave-jnlp", Collections.emptyList())
 podTemplate.setName("jenkins-slave-jnlp")
 podTemplate.setInstanceCap(10)
-podTemplate.setLabel("")
+podTemplate.setNodeSelector("")
 KubernetesCloud kubernetesCloud = new KubernetesCloud("ci-cloud", Collections.singletonList(podTemplate), "https://kubernetes.default", "ci", "http://jenkins-master.ci", "10", 10, 5, 5);
 Jenkins.instance.clouds.add(kubernetesCloud)
