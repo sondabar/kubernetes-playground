@@ -10,6 +10,11 @@ spec:
     - port: 80
       targetPort: 8080
       protocol: TCP
+      name: http
+    - port: 50000
+      targetPort: 50000
+      protocol: TCP
+      name: jnlp
   selector:
     app: jenkins
   type: LoadBalancer
@@ -30,7 +35,7 @@ spec:
     spec:
       containers:
         - name: jenkins
-          image: 192.168.64.1:5000/sondabar/jenkins-master:latest
+          image: sondabar/jenkins-master:latest
           ports:
             - containerPort: 8080
               hostPort: 8090
