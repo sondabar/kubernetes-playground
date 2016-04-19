@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
 
 while getopts ":u:r:i:" OPT; do
   case ${OPT} in
@@ -32,7 +32,7 @@ if [ -z ${REPO} ]; then
 else
     REPO_USER="${REPO}/${USER}"
     mv Dockerfile Dockerfile.bak
-    sed -e s#FROM\ #FROM\ ${REPO_USER}# Dockerfile.bak > Dockerfile
+    sed -e s#FROM\ ${USER}#FROM\ ${REPO_USER}# Dockerfile.bak > Dockerfile
 fi
 
 if [ -z ${IMAGE_NAME} ]; then
@@ -47,7 +47,7 @@ LATEST=${LATEST:-0}
 docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} .
 
 if [ -n ${REPO} ]; then
-    mv Dockfile.bak Dockerfile
+    cp Dockerfile Dockerfile.sed
 fi
 
 ID=$(docker images | grep ${REPO_USER}/${IMAGE_NAME} | grep latest | tr -s ' ' '\t' | cut -f 3)
