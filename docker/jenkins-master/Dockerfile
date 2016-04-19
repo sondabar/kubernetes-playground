@@ -62,3 +62,4 @@ COPY active-plugins.txt /usr/share/jenkins/ref/
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/active-plugins.txt
 
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JENKINS_OPTS --argumentsRealm.passwd.jenkins=${JENKINS_PASSWORD} --argumentsRealm.roles.jenkins=admin
