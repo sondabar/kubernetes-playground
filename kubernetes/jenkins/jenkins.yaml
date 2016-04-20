@@ -35,7 +35,13 @@ spec:
     spec:
       containers:
         - name: jenkins
-          image: sondabar/jenkins-master:latest
+          image: 192.168.64.1:5000/sondabar/jenkins-master:latest
+          env:
+          - name: JENKINS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: jenkins
+                key: password
           ports:
             - containerPort: 8080
               hostPort: 8090
