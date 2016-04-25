@@ -45,7 +45,7 @@ docker pull -a ${REPO_USER}/${IMAGE_NAME}
 LATEST=`docker images | grep ${REPO_USER}/${IMAGE_NAME} | tr -s ' ' '\t' | cut -f 2 | grep -v latest | sort -n -r | head -n 1`
 LATEST=${LATEST:-0}
 
-docker build -t ${REPO_USER}/${IMAGE_NAME} .
+docker build --no-cache -t ${REPO_USER}/${IMAGE_NAME} .
 
 ID=$(docker images | grep ${REPO_USER}/${IMAGE_NAME} | grep latest | tr -s ' ' '\t' | cut -f 3)
 docker tag ${ID} ${REPO_USER}/${IMAGE_NAME}:$((LATEST + 1))
