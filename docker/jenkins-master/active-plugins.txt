@@ -18,7 +18,7 @@ workflow-support:2.0
 workflow-step-api:2.0
 pipeline-stage-view:1.3
 pipeline-rest-api:1.3
-mailer:1.16
+mailer:1.17
 scm-api:1.2
 git:2.4.4
 script-security:1.18.1
@@ -28,7 +28,7 @@ structs:1.1
 git-client:1.19.6
 matrix-project:1.6
 ssh-credentials:1.11
-junit:1.11
+junit:1.12
 jquery-detached:1.2.1
 ace-editor:1.1
 branch-api:1.6
