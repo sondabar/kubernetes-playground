@@ -1,5 +1,4 @@
-import hudson.model.*;
-import jenkins.model.*;
+import jenkins.model.Jenkins;
 
 
 Thread.start {
