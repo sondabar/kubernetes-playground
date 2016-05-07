@@ -28,8 +28,8 @@ RUN curl -fL https://github.com/krallin/tini/releases/download/v0.9.0/tini-stati
 
 COPY tcp-slave-agent-port.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
-ENV JENKINS_VERSION 2.0
-ENV JENKINS_SHA da06f963edb627f0ced2fce612f9985d1928f79b
+ENV JENKINS_VERSION 2.1
+ENV JENKINS_SHA 479476e282eff2b3bae076e81444202356fb0259
 
 
 # could use ADD but this one does not check Last-Modified header
@@ -56,9 +56,9 @@ ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
 # from a derived Dockerfile, can use `RUN plugins.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
 COPY plugins.sh /usr/local/bin/plugins.sh
 
-COPY config.groovy /usr/share/jenkins/ref/init.groovy.d/config.groovy
-
 COPY active-plugins.txt /usr/share/jenkins/ref/
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/active-plugins.txt
+
+COPY config.groovy /usr/share/jenkins/ref/init.groovy.d/config.groovy
 
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
