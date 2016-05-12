@@ -30,8 +30,9 @@ if [ -z ${IMAGE_NAME} ]; then
 fi
 
 mkdir /tmp/${IMAGE_NAME}
-debootstrap --variant=minbase jessie /tmp/${IMAGE_NAME} http://ftp.debian.org/debian/
-tar -C /tmp/${IMAGE_NAME} -c . | docker import - ${IMAGE_NAME}
+docker build -t ${IMAGE_NAME}-debootstrap .
+docker run --rm --privileged -v /tmp/${IMAGE_NAME}:/tmp/base ${IMAGE_NAME}-debootstrap
+docker import /tmp/${IMAGE_NAME}/jessie.tar.gz ${IMAGE_NAME}
 docker tag $(docker images -q ${IMAGE_NAME}) ${REPO_USER}/${IMAGE_NAME}:latest
 docker tag $(docker images -q ${IMAGE_NAME}) ${REPO_USER}/${IMAGE_NAME}:1
 rm -rf /tmp/${IMAGE_NAME}
