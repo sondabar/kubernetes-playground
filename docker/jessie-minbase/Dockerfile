@@ -15,4 +15,4 @@ ENTRYPOINT debootstrap --variant=minbase jessie /base http://ftp.debian.org/debi
            rm -rf /base/var/lib/apt/lists/* && \
            rm -rf /base/var/cache/* && \
            rm -f /tmp/base/jessie.tar && \
-           tar -zcvf /tmp/base/jessie.tar.gz /base
+           tar -zcvf /tmp/base/jessie.tar.gz -C /base .
