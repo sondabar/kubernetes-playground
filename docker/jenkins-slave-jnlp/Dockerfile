@@ -24,7 +24,10 @@
 FROM sondabar/java-jre:latest
 MAINTAINER Lars Cormann <docker@cormann.biz>
 
-RUN apt-get update && apt-get install --no-install-recommends -y curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/*
 
 ENV HOME /home/jenkins
 RUN useradd -c "Jenkins user" -d $HOME -m jenkins

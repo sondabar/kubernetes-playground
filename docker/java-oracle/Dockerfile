@@ -11,4 +11,5 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 &
     apt-get -y --force-yes --purge autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/*
     rm -rf /var/cache/oracle-jdk8-installer

@@ -9,4 +9,5 @@ RUN apt-get -y update && \
     /usr/sbin/update-java-alternatives -s java-1.8.0-openjdk-amd64 && \
     apt-get -y --force-yes --purge autoremove && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/*
